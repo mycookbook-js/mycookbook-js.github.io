@@ -1,3 +1,4 @@
+import { notify } from '../lib/notify.js';
 import { getUserData, setUserData, clearUserData } from '../util.js';
 
 const hostname = 'https://parseapi.back4app.com';
@@ -13,7 +14,8 @@ async function request(url, options) {
 
         return responce.json();
     } catch (error) {
-        alert(error.message);
+        notify(error.message);
+        // alert(error.message);
         throw error;
     }
 }

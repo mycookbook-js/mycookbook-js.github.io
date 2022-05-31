@@ -1,28 +1,30 @@
-import { login } from '../api/user-service.js';
+import { register } from '../api/user-service.js';
 import { html } from '../lib.js';
 import { createSubmitHandler } from '../util.js';
 import { field } from './common.js';
 
-const loginTemplate = (onSubmit, errors, data) => html`
-<section id="login">
+const registerTemplate = (onSubmit, errors, data) => html`
+<section id="register">
     <article>
-        <h2>Login</h2>
-        <form @submit=${onSubmit} id="loginForm">
+        <h2>Register</h2>
+        <form @submit=${onSubmit} id="registerForm">
             ${errors ? html`<p class="error">${errors.message}</p>` : null}
             
             ${field({label: 'Username', name: 'username', value: data.username, error: errors.username})}
+            ${field({label: 'Email', name: 'email', value: data.email, error: errors.email})}
             ${field({label: 'Password', name: 'password', type: 'password', error: errors.password})}
-            <input type="submit" value="Login">
+            ${field({label: 'Repeat Pass', name: 'repass', type: 'password', error: errors.repass})}
+            <input type="submit" value="Register">
         </form>
     </article>
 </section>
 `;
 
-export function loginPage(context) {
+export function registerPage(context) {
     update();
 
     function update(errors = {}, data = {}) {
-        context.render(loginTemplate(createSubmitHandler(onSubmit, 'username', 'password'), errors, data));
+        context.render(registerTemplate(createSubmitHandler(onSubmit, 'username', 'password'), errors, data));
     }
     
     async function onSubmit(data, event) {
@@ -34,9 +36,8 @@ export function loginPage(context) {
                     password: true
                 };
             }
-            // Тук може да деструкторираме username и password и да напишем горе onSubmit({username, password}) и по-долу да ползваме направо тях.
     
-            await login(data.username, data.password);
+            await register();
             event.target.reset();
             
             context.updateSession();
