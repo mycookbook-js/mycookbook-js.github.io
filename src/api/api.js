@@ -9,7 +9,10 @@ async function request(url, options) {
 
         if(responce.ok == false) {
             const error = await responce.json();
-            throw new Error(error.error);
+            throw {
+                message: error.error,
+                code: error.code
+            };
         }
 
         return responce.json();
