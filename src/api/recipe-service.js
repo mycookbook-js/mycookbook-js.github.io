@@ -15,14 +15,14 @@ export async function getRecipes(page, query) {
             }
         };
 
-        return api.get(`/classes/Recipe?where=${encodeURIComponent(JSON.stringify(query))}&skip=${(page - 1) * pageSize}&limit=${pageSize}`);
+        return api.get(`/classes/Recipe?where=${encodeURIComponent(JSON.stringify(query))}&skip=${(page - 1) * pageSize}&limit=${pageSize}&order=-createdAt`);
     }
     
-    return api.get(`/classes/Recipe?skip=${(page - 1) * pageSize}&limit=${pageSize}`);
+    return api.get(`/classes/Recipe?skip=${(page - 1) * pageSize}&limit=${pageSize}&order=-createdAt`);
 }
 
 export async function getRecentRecipes() {
-    return api.get('/classes/Recipe?limit=3');
+    return api.get('/classes/Recipe?limit=3&order=-createdAt');
 }
 
 export async function getRecipeById(id) {

@@ -13,17 +13,17 @@ const catalogTemplate = (catalogPromise, onSearch, page = 1, searchValue = '') =
     </div>
 
     <header class="section-title">
-        Page 2 of 3
-        <a class="pager" href="/catalog/1">< Prev</a>
-        <a class="pager" href="/catalog/3">Next ></a>
+        Page ${page}
+        ${page > 1 ? html`<a class="pager" href="/catalog/?page=${page - 1}">< Prev</a>` : null}
+        <a class="pager" href="/catalog/?page=${Number(page) + 1}">Next ></a>
     </header>
 
     ${until(catalogPromise, spinner())}
 
     <footer class="section-title">
-        Page 2 of 3
-        <a class="pager" href="/catalog/1">< Prev</a>
-        <a class="pager" href="/catalog/3">Next ></a>
+        Page ${page}
+        ${page > 1 ? html`<a class="pager" href="/catalog/?page=${page - 1}">< Prev</a>` : null}
+        <a class="pager" href="/catalog/?page=${page + 1}">Next ></a>
     </footer>
 </section>
 `;

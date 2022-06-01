@@ -3,10 +3,10 @@ import { html, render, until } from '../lib.js';
 import { createSubmitHandler } from '../util.js';
 import { spinner } from './common.js';
 
-const commentsTemplate = (commentsPromise, active, onToggle, onSubmit) => html`
+const commentsTemplate = (commentsPromise, hasUser, active, onToggle, onSubmit) => html`
 <div class="section-title">Comments:</div>
 
-${commentForm(active, onToggle, onSubmit)}
+${hasUser ? commentForm(active, onToggle, onSubmit): null}
 
 <div class="comments">
     <ul>
@@ -55,12 +55,14 @@ export function commentsView(context, recipeId) {
 
     function update(active = false) {
         const result = commentsTemplate(
-            loadComments(commentsPromise), 
+            loadComments(commentsPromise),
+            context.user,
             active, 
             onToggle, 
-            createSubmitHandler(onSubmit, 'content'));
+            createSubmitHandler(onSubmit, 'content')
+        );
         
-            render(result, parent);
+        render(result, parent);
     }
 
     function onToggle() {

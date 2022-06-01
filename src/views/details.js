@@ -1,4 +1,4 @@
-import { getRecipeById } from '../api/recipe-service.js';
+import { deleteRecipe, getRecipeById } from '../api/recipe-service.js';
 import { html, until } from '../lib.js';
 import { commentsView } from './comments.js';
 import { spinner } from './common.js';
@@ -11,7 +11,7 @@ const detailsTemplate = (recipePromise) => html`
 </section>
 `;
 
-const recipeCard = (recipe, isOwner) => html`
+const recipeCard = (recipe, isOwner, onDelete) => html`
 <article>
     <h2>${recipe.name}</h2>
     <div class="band">
@@ -31,7 +31,7 @@ const recipeCard = (recipe, isOwner) => html`
     <div class="controls">
         ${isOwner ? html`
             <a class="actionLink" href="/edit/${recipe.objectId}">&#x270e; Edit</a>
-            <a class="actionLink" href="javascript:void(0)">&#x2716; Delete</a>
+            <a @click=${onDelete} class="actionLink" href="javascript:void(0)">&#x2716; Delete</a>
         ` : null}
     </div>
 </article>
@@ -47,5 +47,13 @@ async function loadRecipe(context) {
     const isOwner = context.user && context.user.id == recipe.owner.objectId;
     //&& Ако имаме context.user тогава проверяваме дали context.user.id == recipe.owner.objectId
 
-    return recipeCard(recipe, isOwner);
+    return recipeCard(recipe, isOwner, onDelete);
+
+    async function onDelete() {
+        if(confirm('Are you sure to delete this recipe?')) {
+            await deleteRecipe(context.params.id);
+            context.notify('Recipe deleted');
+            context.page.redirect('/catalog');
+        }
+    }
 }
