@@ -13,6 +13,7 @@ label {
 
 input[type="text"], input[type="password"], .ml textarea {
     position: absolute;
+    /* position: absolute; */
     right: 0px;
     width: 500px;
     padding: 8px;
@@ -28,13 +29,31 @@ input[type="text"], input[type="password"], .ml textarea {
 }
 
 input[type="submit"] {
+    /* display: block; */
     display: block;
     border: none;
     margin: auto;
+    /* margin: auto; */
     background-color: salmon;
     padding: 8px 16px;
     text-decoration: none;
     color: black;
+}
+
+#catalog-input {
+    right: 0px;
+    width: 500px;
+    padding: 8px;
+    position: inherit;
+}
+
+#catalog-submit {
+    border: none;
+    background-color: salmon;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: black;
+    display: initial;
 }
 
 input[type="submit"]:hover {
@@ -52,9 +71,9 @@ p.error {
     color: red;
 }
 
-#searchForm input[type="text"] {
+/* #searchForm input[type="text"] {
     left: 434px;
-}
+} */
 
 #searchForm input[type="submit"] {
     margin-left: 0px;

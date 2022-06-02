@@ -7,8 +7,8 @@ const catalogTemplate = (catalogPromise, onSearch, page = 1, searchValue = '') =
 <section id="catalog">
     <div class="section-title">
         <form @submit=${onSearch} id="searchForm">
-            <input type="text" name="search" .value=${searchValue}>
-            <input type="submit" value="Search">
+            <input id="catalog-input" type="text" name="search" .value=${searchValue}>
+            <input id="catalog-submit" type="submit" value="Search">
         </form>
     </div>
 

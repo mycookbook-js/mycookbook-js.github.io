@@ -1,4 +1,4 @@
-import { createRecipe } from '../api/recipe-service.js';
+import { getRecipeById, updateRecipe } from '../api/recipe-service.js';
 import { html } from '../lib.js';
 import { createSubmitHandler } from '../util.js';
 import { field } from './common.js';
@@ -7,7 +7,7 @@ const editTemplate = (onSubmit, errors, data) => html`
 <section id="create">
     <article>
         <h2>Edit Recipe</h2>
-        <form @submit=${onSubmit} id="createForm">
+        <form @submit=${onSubmit} id="editForm">
             ${errors ? html`<p class="error">${errors.message}</p>` : null}
 
             ${field({
@@ -50,14 +50,19 @@ const editTemplate = (onSubmit, errors, data) => html`
 </section>
 `;
 
-export function editPage(context) {
+export async function editPage(context) {
+    const recipe = await getRecipeById(context.params.id);
+    recipe.ingredients = recipe.ingredients.join('\n');
+    recipe.steps = recipe.steps.join('\n');
+    
     update();
 
-    function update(errors = {}, data = {}) {
+    function update(errors = {}, data = recipe) {
         context.render(
                 editTemplate(
                 createSubmitHandler(onSubmit, 'name', 'img', 'ingredients', 'steps'), 
-                errors, data
+                errors,
+                data
             )
         );
     }
@@ -76,13 +81,14 @@ export function editPage(context) {
                 ingredients: data.ingredients.split('\n').filter(r => r != ''),
                 steps: data.steps.split('\n').filter(r => r != '')
             };
-
-            console.log(recipe);
     
-            const result = await createRecipe(recipe);
+            await updateRecipe(context.params.id, recipe);
+            
             event.target.reset();
             
-            context.page.redirect('/details/' + result.objectId);
+            context.notify('Recipe updated');
+
+            context.page.redirect('/details/' + context.params.id);
         } catch (error) {
             update(error, data);
         }

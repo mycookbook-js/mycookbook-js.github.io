@@ -5,7 +5,7 @@ export default function initialize() {
     updateSession();
 
     return function (context, next) {
-        context.updateSession = getUserData;
+        context.updateSession = updateSession;
         context.user = user;
 
         next();
